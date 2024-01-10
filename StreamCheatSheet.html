@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- XML file produced from file: StreamCheatSheet.tex
+     using Hyperlatex v 2.7 (c) Otfried Cheong
+     on Emacs 21.2.1, Sun May  7 19:53:19 2006 -->
+<head>
+<title>Java Graphics Quick Reference</title>
+
+<style type="text/css">
+.maketitle { align : center }
+div.abstract { margin-left: 20%; margin-right: 10%; }
+h3.abstract  { align : center }
+div.verse, div.quote, div.quotation {
+  margin-left : 10%; 
+  margin-right : 10%;
+}
+</style>
+
+
+</head>
+<body>
+
+
+<div align="center"><p>
+<b><font size="+1">Streams Cheat Sheet</font></b>
+</p></div>
+
+<h1><a name="id1">Readers</a></h1>
+
+<h4><a name="id2">Creating readers for different streams.</a></h4>
+There are several
+ways to create Readers:
+<ul><li>For a file:   
+    <pre>
+        FileReader reader = new FileReader("filename");
+    </pre>    <li>For the terminal: 
+    <pre>
+        InputStreamReader reader = new InputStreamReader(System.in);
+    </pre>    <li>For a url:  
+    <pre>
+        URL url = new URL("http://www.cs.williams.edu/~index.html");
+        InputStreamReader reader = new InputStreamReader(url.openStream());
+    </pre>    <li>For a Socket:  
+    <pre>
+        InputStreamReader reader = new InputStreamReader(socket.getInputStream());
+    </pre></ul>
+
+<h4><a name="id3">Reading from streams.</a></h4>
+All readers allow you to read one character at a time with the
+<tt>read()</tt> method.
+<pre>
+    int ch = reader.read();
+</pre>The variable <tt>ch</tt> is set to a character value between 0 and
+255, or -1 when there are no more characters left in the stream (i.e.,
+at the end of a file).
+<p>To read whole lines at a time, use a BufferedReader:
+<pre>
+    BufferedReader buffer = new BufferedReader(reader);
+</pre>The <tt>reader</tt> variable is any reader made above.  The following
+example shows how to read all lines in a file using a buffered reader:
+<pre>
+    String s;
+    BufferedReader buffer = new BufferedReader(new FileReader("filename"));
+    s = buffer.readLine();
+    while (s != null) {
+        System.out.println(s);
+        s = buffer.readLine();
+    }
+</pre>
+The method <tt>readLine()</tt> returns <tt>null</tt> when the reader
+reaches the end of the stream.
+
+<h4><a name="id4">Closing readers.</a></h4>
+To close a reader, call the
+<tt>close()</tt> method:
+<pre>
+    reader.close();
+</pre>
+
+<h1><a name="id5">Writers</a></h1>
+
+<h4><a name="id6">Creating writers for different streams.</a></h4>
+There are several
+ways to create Writers.  We always want to create a
+<tt>PrintWriter</tt> for our writer so that we can write more than one
+character at a time:
+<ul><li>For a file:   
+    <pre>
+        PrintWriter writer = new PrintWriter(new FileWriter("filename"));
+    </pre>    <li>For the terminal: <tt>System.out</tt> is already a <tt>PrintWriter</tt>.
+    <li>For a Socket:  
+    <pre>
+        PrintWriter writer = 
+           new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+    </pre>
+    For sockets, we need to use one extra parameter for the
+    <tt>PrintWriter</tt> constructor to indicate that Java should
+    treat the <tt>PrintWriter</tt> as something that writes to a
+    network.
+</ul>
+
+<h4><a name="id7">Writing to streams.</a></h4>
+You use a <tt>PrintWriter</tt> just as
+we have been using <tt>System.out</tt> all semester:
+<pre>
+    writer.println("some text");
+    writer.print("some text");
+</pre>
+Unlike <tt>println</tt>, the <tt>print</tt> method does not start a
+new line after printing the text.
+
+<h4><a name="id8">Closing writers.</a></h4>
+Close writers just like readers:
+<pre>
+    writer.close();
+</pre>
+<hr />
+</body></html>
